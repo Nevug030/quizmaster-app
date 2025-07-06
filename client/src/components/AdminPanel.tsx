@@ -23,10 +23,6 @@ const AdminPanel: React.FC = () => {
   const [questionDifficulty, setQuestionDifficulty] = useState('einfach');
   const [questionText, setQuestionText] = useState('');
   const [correctAnswer, setCorrectAnswer] = useState('');
-  const [option1, setOption1] = useState('');
-  const [option2, setOption2] = useState('');
-  const [option3, setOption3] = useState('');
-  const [option4, setOption4] = useState('');
 
   useEffect(() => {
     loadCategories();
@@ -81,24 +77,13 @@ const AdminPanel: React.FC = () => {
       return;
     }
     
-    const options = [option1, option2, option3, option4].filter(opt => opt.trim());
-    if (options.length < 2) {
-      alert('Bitte gib mindestens 2 Antwortoptionen ein!');
-      return;
-    }
-    
-    if (!options.includes(correctAnswer)) {
-      alert('Die richtige Antwort muss in den Antwortoptionen enthalten sein!');
-      return;
-    }
-    
     try {
       const newQuestion = await quizApi.addQuestion({
         category: questionCategory,
         difficulty: questionDifficulty,
         question: questionText,
         correctAnswer,
-        options: options
+        options: [correctAnswer] // Nur die richtige Antwort als Option
       });
       
       // Reset form
@@ -106,10 +91,6 @@ const AdminPanel: React.FC = () => {
       setQuestionDifficulty('einfach');
       setQuestionText('');
       setCorrectAnswer('');
-      setOption1('');
-      setOption2('');
-      setOption3('');
-      setOption4('');
       setShowQuestionForm(false);
       
       alert('Frage erfolgreich hinzugefügt!');
@@ -336,43 +317,7 @@ const AdminPanel: React.FC = () => {
               />
             </div>
 
-            <div style={{ marginBottom: '15px' }}>
-              <label style={{ display: 'block', marginBottom: '5px', fontWeight: 'bold' }}>
-                Antwortoptionen *
-              </label>
-              <div style={{ display: 'grid', gap: '10px' }}>
-                <input
-                  type="text"
-                  value={option1}
-                  onChange={(e) => setOption1(e.target.value)}
-                  style={{ padding: '10px', borderRadius: '4px', border: '1px solid #ddd' }}
-                  placeholder="Option 1..."
-                  required
-                />
-                <input
-                  type="text"
-                  value={option2}
-                  onChange={(e) => setOption2(e.target.value)}
-                  style={{ padding: '10px', borderRadius: '4px', border: '1px solid #ddd' }}
-                  placeholder="Option 2..."
-                  required
-                />
-                <input
-                  type="text"
-                  value={option3}
-                  onChange={(e) => setOption3(e.target.value)}
-                  style={{ padding: '10px', borderRadius: '4px', border: '1px solid #ddd' }}
-                  placeholder="Option 3..."
-                />
-                <input
-                  type="text"
-                  value={option4}
-                  onChange={(e) => setOption4(e.target.value)}
-                  style={{ padding: '10px', borderRadius: '4px', border: '1px solid #ddd' }}
-                  placeholder="Option 4..."
-                />
-              </div>
-            </div>
+
 
             <button type="submit" className="btn">
               ✅ Frage hinzufügen
@@ -386,6 +331,7 @@ const AdminPanel: React.FC = () => {
         <ul style={{ textAlign: 'left', lineHeight: '1.6' }}>
           <li>Neue Kategorien werden sofort für Quiz-Runden verfügbar</li>
           <li>Fragen werden automatisch der entsprechenden Kategorie zugeordnet</li>
+          <li>Nur die richtige Antwort wird angezeigt (keine Multiple Choice)</li>
           <li>Du kannst Fragen jederzeit über die Blacklist sperren</li>
           <li>Alle Änderungen werden permanent in der Datenbank gespeichert</li>
           <li>Die Fragenanzahl wird automatisch aktualisiert</li>
