@@ -17,7 +17,7 @@
   status = 200
 
 [context.production.environment]
-  REACT_APP_API_URL = "https://quizmaster-backend.onrender.com/api"
+  REACT_APP_API_URL = "https://quizmaster-app-kqm7.onrender.com/api"
 
 [context.deploy-preview.environment]
-  REACT_APP_API_URL = "https://quizmaster-backend.onrender.com/api" 
+  REACT_APP_API_URL = "https://quizmaster-app-kqm7.onrender.com/api" 
