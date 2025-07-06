@@ -4,6 +4,8 @@ import { Category, Question, BlacklistEntry } from '../types';
 // Use configuration file for API URL
 const API_BASE_URL = 'https://quizmaster-app-kqm7.onrender.com/api';
 
+console.log('🔗 API Base URL:', API_BASE_URL);
+
 const api = axios.create({
   baseURL: API_BASE_URL,
   headers: {
@@ -14,7 +16,9 @@ const api = axios.create({
 export const quizApi = {
   // Kategorien abrufen
   getCategories: async (): Promise<Category[]> => {
+    console.log('📡 Requesting categories from:', `${API_BASE_URL}/categories`);
     const response = await api.get('/categories');
+    console.log('✅ Categories response:', response.data);
     return response.data;
   },
 
