@@ -10,7 +10,6 @@ const PORT = process.env.PORT || 5001;
 // Middleware
 app.use(cors());
 app.use(express.json());
-app.use(express.static(path.join(__dirname, '../client/build')));
 
 // Datenpfade
 const DATA_DIR = path.join(__dirname, 'data');
@@ -300,10 +299,7 @@ app.delete('/api/blacklist/:questionId', async (req, res) => {
   }
 });
 
-// Alle anderen Anfragen an React-App weiterleiten
-app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../client/build/index.html'));
-});
+// API-only Server - keine statischen Dateien
 
 // Server starten
 async function startServer() {
