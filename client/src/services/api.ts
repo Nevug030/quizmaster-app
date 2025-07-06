@@ -1,7 +1,8 @@
 import axios from 'axios';
 import { Category, Question } from '../types';
 
-const API_BASE_URL = process.env.REACT_APP_API_URL || 'https://quizmaster-app-kqm7.onrender.com/api'; // Updated URL
+// Force correct API URL for production
+const API_BASE_URL = process.env.REACT_APP_API_URL || 'https://quizmaster-app-kqm7.onrender.com/api';
 
 const api = axios.create({
   baseURL: API_BASE_URL,
