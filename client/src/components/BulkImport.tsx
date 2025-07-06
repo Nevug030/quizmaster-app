@@ -103,8 +103,7 @@ const BulkImport: React.FC = () => {
             category: selectedCategory,
             difficulty: selectedDifficulty,
             question: questionData.question,
-            correctAnswer: questionData.answer,
-            options: [questionData.answer]
+            correctAnswer: questionData.answer
           });
           successCount++;
         } catch (error) {

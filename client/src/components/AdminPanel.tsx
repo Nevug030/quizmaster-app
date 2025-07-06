@@ -82,8 +82,7 @@ const AdminPanel: React.FC = () => {
         category: questionCategory,
         difficulty: questionDifficulty,
         question: questionText,
-        correctAnswer,
-        options: [correctAnswer] // Nur die richtige Antwort als Option
+        correctAnswer
       });
       
       // Reset form
@@ -328,8 +327,6 @@ const AdminPanel: React.FC = () => {
                 required
               />
             </div>
-
-
 
             <button type="submit" className="btn">
               ✅ Frage hinzufügen

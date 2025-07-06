@@ -43,7 +43,7 @@ export const quizApi = {
   },
 
   // Neue Frage hinzufügen
-  addQuestion: async (question: { category: string; difficulty: string; question: string; correctAnswer: string; options: string[] }): Promise<Question> => {
+  addQuestion: async (question: { category: string; difficulty: string; question: string; correctAnswer: string }): Promise<Question> => {
     const response = await api.post('/questions', question);
     return response.data;
   },

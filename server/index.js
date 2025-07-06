@@ -137,7 +137,7 @@ app.post('/api/categories', async (req, res) => {
 // Neue Frage hinzufügen
 app.post('/api/questions', async (req, res) => {
   try {
-    const { category, difficulty, question, correctAnswer, options } = req.body;
+    const { category, difficulty, question, correctAnswer } = req.body;
     
     const questionId = `${category.substring(0, 2)}${difficulty.substring(0, 1)}${Date.now()}`;
     
@@ -146,8 +146,7 @@ app.post('/api/questions', async (req, res) => {
       category,
       difficulty,
       question,
-      correctAnswer,
-      options
+      correctAnswer
     });
     
     // Update category question count

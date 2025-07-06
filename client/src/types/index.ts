@@ -17,7 +17,6 @@ export interface Question {
   difficulty: string;
   question: string;
   correctAnswer: string;
-  options: string[];
   usageCount: number;
   lastUsed: string | null;
   isActive: boolean;
@@ -73,7 +72,6 @@ export interface MongoDBQuestion {
   difficulty: string;
   question: string;
   correctAnswer: string;
-  options: string[];
   usageCount: number;
   lastUsed: string | null;
   isActive: boolean;

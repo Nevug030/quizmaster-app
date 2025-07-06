@@ -26,16 +26,6 @@ const questionSchema = new mongoose.Schema({
     type: String,
     required: true
   },
-  options: {
-    type: [String],
-    required: true,
-    validate: {
-      validator: function(v) {
-        return v.length === 4 && v.includes(this.correctAnswer);
-      },
-      message: 'Options müssen genau 4 Antworten enthalten und die richtige Antwort einschließen'
-    }
-  },
   usageCount: {
     type: Number,
     default: 0
