@@ -15,6 +15,12 @@ const BulkImport: React.FC = () => {
   const [bulkData, setBulkData] = useState('');
   const [previewQuestions, setPreviewQuestions] = useState<Array<{question: string, answer: string}>>([]);
   const [showPreview, setShowPreview] = useState(false);
+  
+  // Progress states
+  const [importProgress, setImportProgress] = useState(0);
+  const [totalQuestions, setTotalQuestions] = useState(0);
+  const [currentQuestion, setCurrentQuestion] = useState(0);
+  const [showProgress, setShowProgress] = useState(false);
 
   React.useEffect(() => {
     loadCategories();
@@ -93,11 +99,22 @@ const BulkImport: React.FC = () => {
     }
 
     setLoading(true);
+    setShowProgress(true);
+    setTotalQuestions(previewQuestions.length);
+    setCurrentQuestion(0);
+    setImportProgress(0);
+    
     let successCount = 0;
     let errorCount = 0;
 
     try {
-      for (const questionData of previewQuestions) {
+      for (let i = 0; i < previewQuestions.length; i++) {
+        const questionData = previewQuestions[i];
+        
+        // Update progress
+        setCurrentQuestion(i + 1);
+        setImportProgress(((i + 1) / previewQuestions.length) * 100);
+        
         try {
           await quizApi.addQuestion({
             category: selectedCategory,
@@ -120,6 +137,10 @@ const BulkImport: React.FC = () => {
       setShowPreview(false);
       setSelectedCategory('');
       setSelectedDifficulty('einfach');
+      setShowProgress(false);
+      setImportProgress(0);
+      setCurrentQuestion(0);
+      setTotalQuestions(0);
       
     } catch (error) {
       console.error('Fehler beim Import:', error);
@@ -147,6 +168,54 @@ const BulkImport: React.FC = () => {
         <h1>📥 Bulk-Import</h1>
         <p>Importiere viele Fragen auf einmal aus Excel/CSV-Daten</p>
       </div>
+
+      {/* Progress Bar */}
+      {showProgress && (
+        <div className="card" style={{ 
+          background: 'rgba(0, 184, 148, 0.1)', 
+          border: '2px solid #00b894',
+          marginBottom: '20px'
+        }}>
+          <h3 style={{ color: '#00b894', marginBottom: '15px' }}>
+            ⏳ Import läuft...
+          </h3>
+          
+          <div style={{ marginBottom: '10px' }}>
+            <div style={{ 
+              display: 'flex', 
+              justifyContent: 'space-between', 
+              marginBottom: '5px',
+              fontSize: '0.9rem'
+            }}>
+              <span>Frage {currentQuestion} von {totalQuestions}</span>
+              <span>{Math.round(importProgress)}%</span>
+            </div>
+            
+            <div style={{ 
+              width: '100%', 
+              height: '20px', 
+              backgroundColor: '#e0e0e0', 
+              borderRadius: '10px',
+              overflow: 'hidden'
+            }}>
+              <div style={{ 
+                width: `${importProgress}%`, 
+                height: '100%', 
+                backgroundColor: '#00b894',
+                transition: 'width 0.3s ease'
+              }} />
+            </div>
+          </div>
+          
+          <div style={{ 
+            fontSize: '0.9rem', 
+            color: '#666',
+            textAlign: 'center'
+          }}>
+            Bitte warte, bis der Import abgeschlossen ist...
+          </div>
+        </div>
+      )}
 
       <div className="card">
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '20px' }}>
@@ -287,9 +356,10 @@ Welches chemische Element hat die Ordnungszahl 79?	Gold"
                 borderRadius: '4px', 
                 padding: '10px', 
                 marginBottom: '10px',
-                background: 'white'
+                background: 'white',
+                color: '#333'
               }}>
-                <div style={{ fontWeight: 'bold', marginBottom: '5px' }}>
+                <div style={{ fontWeight: 'bold', marginBottom: '5px', color: '#333' }}>
                   {index + 1}. {q.question}
                 </div>
                 <div style={{ color: '#00b894', fontSize: '0.9rem' }}>
