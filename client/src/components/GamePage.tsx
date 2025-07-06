@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Question, Player, QuizSettings, GameState } from '../types';
+import { Player, QuizSettings, GameState } from '../types';
 import { quizApi } from '../services/api';
 
 const GamePage: React.FC = () => {
@@ -22,11 +22,7 @@ const GamePage: React.FC = () => {
   const [error, setError] = useState<string | null>(null);
   const [settings, setSettings] = useState<QuizSettings | null>(null);
 
-  useEffect(() => {
-    initializeGame();
-  }, []);
-
-  const initializeGame = async () => {
+  const initializeGame = useCallback(async () => {
     try {
       setLoading(true);
       
@@ -71,7 +67,13 @@ const GamePage: React.FC = () => {
     } finally {
       setLoading(false);
     }
-  };
+  }, [navigate]);
+
+  useEffect(() => {
+    initializeGame();
+  }, [initializeGame]);
+
+
 
   const selectPlayer = (player: Player) => {
     if (gameState.showAnswer) return;
