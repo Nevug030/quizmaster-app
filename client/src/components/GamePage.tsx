@@ -21,6 +21,7 @@ const GamePage: React.FC = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [settings, setSettings] = useState<QuizSettings | null>(null);
+  const [questionsAsked, setQuestionsAsked] = useState(1); // Start bei 1, da die erste Frage geladen ist
 
   const initializeGame = useCallback(async () => {
     try {
@@ -101,26 +102,28 @@ const GamePage: React.FC = () => {
   };
 
   const nextQuestion = () => {
-    const nextIndex = gameState.currentQuestionIndex + 1;
-    
-    if (nextIndex >= gameState.questions.length) {
-      // Spiel beendet
+    // Zähle, wie viele Fragen tatsächlich gestellt wurden
+    if (!settings) return;
+    const nextAsked = questionsAsked + 1;
+    if (nextAsked > settings.questionCount) {
+      // Spiel beenden, wenn die gewünschte Anzahl erreicht ist
       setGameState(prev => ({
         ...prev,
         gameEnded: true,
         showAnswer: false,
         selectedPlayer: null
       }));
-    } else {
-      // Nächste Frage
-      setGameState(prev => ({
-        ...prev,
-        currentQuestionIndex: nextIndex,
-        currentQuestion: prev.questions[nextIndex],
-        showAnswer: false,
-        selectedPlayer: null
-      }));
+      return;
     }
+    const nextIndex = gameState.currentQuestionIndex + 1;
+    setQuestionsAsked(nextAsked);
+    setGameState(prev => ({
+      ...prev,
+      currentQuestionIndex: nextIndex,
+      currentQuestion: prev.questions[nextIndex],
+      showAnswer: false,
+      selectedPlayer: null
+    }));
   };
 
   const skipQuestion = () => {
@@ -129,15 +132,13 @@ const GamePage: React.FC = () => {
     const availableQuestions = gameState.availableQuestions.filter(q => 
       !usedQuestionIds.includes(q.questionId)
     );
-    
     if (availableQuestions.length > 0) {
       // Zufällige neue Frage auswählen
       const randomIndex = Math.floor(Math.random() * availableQuestions.length);
       const newQuestion = availableQuestions[randomIndex];
-      
-      // Neue Frage zur Fragenliste hinzufügen
-      const updatedQuestions = [...gameState.questions, newQuestion];
-      
+      // Ersetze die aktuelle Frage durch die neue (statt anhängen)
+      const updatedQuestions = [...gameState.questions];
+      updatedQuestions[gameState.currentQuestionIndex] = newQuestion;
       setGameState(prev => ({
         ...prev,
         questions: updatedQuestions,
@@ -145,6 +146,7 @@ const GamePage: React.FC = () => {
         showAnswer: false,
         selectedPlayer: null
       }));
+      // Fragenzähler bleibt gleich, da nur ersetzt wurde
     } else {
       // Keine weiteren Fragen verfügbar, normale nächste Frage
       nextQuestion();
@@ -281,12 +283,7 @@ const GamePage: React.FC = () => {
       <div className="header">
         <h1>🎯 Quiz läuft</h1>
         <p>
-          Frage {gameState.currentQuestionIndex + 1} von {gameState.questions.length}
-          {settings && gameState.questions.length > settings.questionCount && (
-            <span style={{ fontSize: '0.9rem', opacity: 0.8, marginLeft: '10px' }}>
-              (+{gameState.questions.length - settings.questionCount} nachgeladen)
-            </span>
-          )}
+          Frage {questionsAsked} von {settings?.questionCount}
         </p>
       </div>
 
@@ -296,7 +293,7 @@ const GamePage: React.FC = () => {
           <div 
             className="progress-fill"
             style={{ 
-              width: `${((gameState.currentQuestionIndex + 1) / gameState.questions.length) * 100}%` 
+              width: `${settings?.questionCount ? ((questionsAsked) / settings.questionCount) * 100 : 0}%` 
             }}
           />
         </div>
@@ -390,10 +387,7 @@ const GamePage: React.FC = () => {
             className="btn btn-secondary"
             onClick={nextQuestion}
           >
-            {gameState.currentQuestionIndex + 1 >= gameState.questions.length 
-              ? '🏆 Quiz beenden' 
-              : '⏭️ Nächste Frage'
-            }
+            {settings?.questionCount && questionsAsked >= settings.questionCount ? '�� Quiz beenden' : '⏭️ Nächste Frage'}
           </button>
         )}
       </div>
