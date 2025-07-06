@@ -178,7 +178,7 @@ const AdminPanel: React.FC = () => {
           ))}
         </div>
 
-        <div style={{ marginTop: '20px', display: 'flex', gap: '15px', justifyContent: 'center' }}>
+        <div style={{ marginTop: '20px', display: 'flex', gap: '15px', justifyContent: 'center', flexWrap: 'wrap' }}>
           <button 
             className="btn"
             onClick={() => setShowCategoryForm(!showCategoryForm)}
@@ -190,6 +190,12 @@ const AdminPanel: React.FC = () => {
             onClick={() => setShowQuestionForm(!showQuestionForm)}
           >
             {showQuestionForm ? '❌ Abbrechen' : '❓ Neue Frage'}
+          </button>
+          <button 
+            className="btn"
+            onClick={() => navigate('/bulk-import')}
+          >
+            📥 Bulk-Import
           </button>
         </div>
       </div>

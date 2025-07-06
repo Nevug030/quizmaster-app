@@ -5,6 +5,7 @@ import QuizSetup from './components/QuizSetup';
 import GamePage from './components/GamePage';
 import BlacklistManager from './components/BlacklistManager';
 import AdminPanel from './components/AdminPanel';
+import BulkImport from './components/BulkImport';
 import './App.css';
 
 function App() {
@@ -17,6 +18,7 @@ function App() {
         <Route path="/game" element={<GamePage />} />
         <Route path="/blacklist" element={<BlacklistManager />} />
         <Route path="/admin" element={<AdminPanel />} />
+        <Route path="/bulk-import" element={<BulkImport />} />
       </Routes>
       </div>
     </Router>
