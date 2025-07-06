@@ -14,9 +14,26 @@ const connectDB = require('./config/database');
 const app = express();
 const PORT = process.env.PORT || 5001;
 
+// CORS Configuration für Netlify
+const corsOptions = {
+  origin: [
+    'https://nevugs-quizmaster.netlify.app',
+    'https://quizmaster-app.netlify.app',
+    'https://*.netlify.app',
+    'http://localhost:3000',
+    'http://localhost:3001'
+  ],
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+};
+
 // Middleware
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(express.json());
+
+// Preflight requests für CORS
+app.options('*', cors(corsOptions));
 
 // API Endpoints
 
