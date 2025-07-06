@@ -34,7 +34,7 @@ const QuizSetup: React.FC = () => {
       setCategories(categoriesData);
       
       // Standardmäßig alle Kategorien und Schwierigkeiten auswählen
-      setSelectedCategories(categoriesData.map(cat => cat.id));
+      setSelectedCategories(categoriesData.map(cat => cat.categoryId));
       setSelectedDifficulties(['einfach', 'mittel', 'schwer']);
     } catch (err) {
       setError('Fehler beim Laden der Kategorien');
@@ -133,13 +133,13 @@ const QuizSetup: React.FC = () => {
         <div className="checkbox-group">
           {categories.map(category => (
             <div 
-              key={category.id}
-              className={`checkbox-item ${selectedCategories.includes(category.id) ? 'checked' : ''}`}
-              onClick={() => handleCategoryToggle(category.id)}
+              key={category.categoryId}
+              className={`checkbox-item ${selectedCategories.includes(category.categoryId) ? 'checked' : ''}`}
+              onClick={() => handleCategoryToggle(category.categoryId)}
             >
               <input 
                 type="checkbox" 
-                checked={selectedCategories.includes(category.id)}
+                checked={selectedCategories.includes(category.categoryId)}
                 onChange={() => {}} // Handled by onClick
               />
               <div>

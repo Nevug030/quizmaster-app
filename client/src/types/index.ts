@@ -1,17 +1,28 @@
 export interface Category {
-  id: string;
+  _id: string;
+  categoryId: string;
   name: string;
   description: string;
   difficulties: string[];
+  questionCount: number;
+  isActive: boolean;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface Question {
-  id: string;
+  _id: string;
+  questionId: string;
   category: string;
   difficulty: string;
   question: string;
   correctAnswer: string;
   options: string[];
+  usageCount: number;
+  lastUsed: string | null;
+  isActive: boolean;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface Player {

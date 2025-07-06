@@ -125,9 +125,9 @@ const GamePage: React.FC = () => {
 
   const skipQuestion = () => {
     // Neue Frage aus den verfügbaren Fragen holen
-    const usedQuestionIds = gameState.questions.map(q => q.id);
+    const usedQuestionIds = gameState.questions.map(q => q.questionId);
     const availableQuestions = gameState.availableQuestions.filter(q => 
-      !usedQuestionIds.includes(q.id)
+      !usedQuestionIds.includes(q.questionId)
     );
     
     if (availableQuestions.length > 0) {
@@ -155,10 +155,10 @@ const GamePage: React.FC = () => {
     if (!gameState.currentQuestion) return;
     
     try {
-      await quizApi.addToBlacklist(gameState.currentQuestion.id);
+      await quizApi.addToBlacklist(gameState.currentQuestion.questionId);
       setGameState(prev => ({
         ...prev,
-        blacklistedQuestions: [...prev.blacklistedQuestions, gameState.currentQuestion!.id]
+        blacklistedQuestions: [...prev.blacklistedQuestions, gameState.currentQuestion!.questionId]
       }));
       alert(`Frage "${gameState.currentQuestion.question.substring(0, 50)}..." wurde zur Blacklist hinzugefügt!`);
       
