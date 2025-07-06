@@ -3,7 +3,7 @@ import { Category, Question, BlacklistEntry } from '../types';
 import { API_CONFIG } from '../config/apiConfig';
 
 // Use configuration file for API URL
-const API_BASE_URL = process.env.REACT_APP_API_URL || API_CONFIG.BASE_URL;
+const API_BASE_URL = 'https://quizmaster-app-kqm7.onrender.com/api';
 
 const api = axios.create({
   baseURL: API_BASE_URL,
