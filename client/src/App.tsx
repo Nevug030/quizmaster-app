@@ -6,6 +6,7 @@ import GamePage from './components/GamePage';
 import BlacklistManager from './components/BlacklistManager';
 import AdminPanel from './components/AdminPanel';
 import BulkImport from './components/BulkImport';
+import QuestionManager from './components/QuestionManager';
 import './App.css';
 
 function App() {
@@ -19,6 +20,7 @@ function App() {
         <Route path="/blacklist" element={<BlacklistManager />} />
         <Route path="/admin" element={<AdminPanel />} />
         <Route path="/bulk-import" element={<BulkImport />} />
+        <Route path="/questions" element={<QuestionManager />} />
       </Routes>
       </div>
     </Router>

@@ -197,6 +197,12 @@ const AdminPanel: React.FC = () => {
           >
             📥 Bulk-Import
           </button>
+          <button 
+            className="btn"
+            onClick={() => navigate('/questions')}
+          >
+            📋 Fragen-Verwaltung
+          </button>
         </div>
       </div>
 
