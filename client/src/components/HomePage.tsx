@@ -31,6 +31,12 @@ const HomePage: React.FC = () => {
           >
             🚫 Blacklist verwalten
           </button>
+          <button 
+            className="btn" 
+            onClick={() => navigate('/admin')}
+          >
+            ⚙️ Admin-Panel
+          </button>
         </div>
       </div>
 

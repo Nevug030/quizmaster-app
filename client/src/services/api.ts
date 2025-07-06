@@ -37,13 +37,13 @@ export const quizApi = {
   },
 
   // Neue Kategorie hinzufügen
-  addCategory: async (category: Omit<Category, 'id'>): Promise<Category> => {
+  addCategory: async (category: { name: string; description: string; difficulties: string[] }): Promise<Category> => {
     const response = await api.post('/categories', category);
     return response.data;
   },
 
   // Neue Frage hinzufügen
-  addQuestion: async (question: Omit<Question, 'id'>): Promise<Question> => {
+  addQuestion: async (question: { category: string; difficulty: string; question: string; correctAnswer: string; options: string[] }): Promise<Question> => {
     const response = await api.post('/questions', question);
     return response.data;
   },

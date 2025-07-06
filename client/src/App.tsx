@@ -4,6 +4,7 @@ import HomePage from './components/HomePage';
 import QuizSetup from './components/QuizSetup';
 import GamePage from './components/GamePage';
 import BlacklistManager from './components/BlacklistManager';
+import AdminPanel from './components/AdminPanel';
 import './App.css';
 
 function App() {
@@ -15,6 +16,7 @@ function App() {
         <Route path="/setup" element={<QuizSetup />} />
         <Route path="/game" element={<GamePage />} />
         <Route path="/blacklist" element={<BlacklistManager />} />
+        <Route path="/admin" element={<AdminPanel />} />
       </Routes>
       </div>
     </Router>
