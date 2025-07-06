@@ -1,0 +1,132 @@
+[
+  {
+    "id": "ae1",
+    "category": "allgemeinwissen",
+    "difficulty": "einfach",
+    "question": "Was ist die Hauptstadt von Deutschland?",
+    "correctAnswer": "Berlin",
+    "options": [
+      "München",
+      "Berlin",
+      "Hamburg",
+      "Köln"
+    ]
+  },
+  {
+    "id": "ae2",
+    "category": "allgemeinwissen",
+    "difficulty": "einfach",
+    "question": "Wie viele Planeten hat unser Sonnensystem?",
+    "correctAnswer": "8",
+    "options": [
+      "7",
+      "8",
+      "9",
+      "10"
+    ]
+  },
+  {
+    "id": "am1",
+    "category": "allgemeinwissen",
+    "difficulty": "mittel",
+    "question": "In welchem Jahr wurde die Berliner Mauer gebaut?",
+    "correctAnswer": "1961",
+    "options": [
+      "1959",
+      "1960",
+      "1961",
+      "1962"
+    ]
+  },
+  {
+    "id": "am2",
+    "category": "allgemeinwissen",
+    "difficulty": "mittel",
+    "question": "Wer schrieb \"Faust\"?",
+    "correctAnswer": "Goethe",
+    "options": [
+      "Schiller",
+      "Goethe",
+      "Lessing",
+      "Kleist"
+    ]
+  },
+  {
+    "id": "as1",
+    "category": "allgemeinwissen",
+    "difficulty": "schwer",
+    "question": "Welches chemische Element hat die Ordnungszahl 79?",
+    "correctAnswer": "Gold",
+    "options": [
+      "Silber",
+      "Platin",
+      "Gold",
+      "Kupfer"
+    ]
+  },
+  {
+    "id": "ge1",
+    "category": "geografie",
+    "difficulty": "einfach",
+    "question": "Welches ist das größte Land der Welt?",
+    "correctAnswer": "Russland",
+    "options": [
+      "China",
+      "USA",
+      "Russland",
+      "Kanada"
+    ]
+  },
+  {
+    "id": "ge2",
+    "category": "geografie",
+    "difficulty": "einfach",
+    "question": "Welcher Fluss fließt durch Paris?",
+    "correctAnswer": "Seine",
+    "options": [
+      "Loire",
+      "Seine",
+      "Rhone",
+      "Garonne"
+    ]
+  },
+  {
+    "id": "gm1",
+    "category": "geografie",
+    "difficulty": "mittel",
+    "question": "Welches ist die Hauptstadt von Australien?",
+    "correctAnswer": "Canberra",
+    "options": [
+      "Sydney",
+      "Melbourne",
+      "Canberra",
+      "Brisbane"
+    ]
+  },
+  {
+    "id": "gm2",
+    "category": "geografie",
+    "difficulty": "mittel",
+    "question": "Welcher Berg ist der höchste in Europa?",
+    "correctAnswer": "Mont Blanc",
+    "options": [
+      "Matterhorn",
+      "Mont Blanc",
+      "Mount Elbrus",
+      "Eiger"
+    ]
+  },
+  {
+    "id": "gs1",
+    "category": "geografie",
+    "difficulty": "schwer",
+    "question": "Welches Land hat die meisten Zeitzonen?",
+    "correctAnswer": "Frankreich",
+    "options": [
+      "Russland",
+      "USA",
+      "Frankreich",
+      "Australien"
+    ]
+  }
+]

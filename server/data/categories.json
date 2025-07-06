@@ -1,0 +1,22 @@
+[
+  {
+    "id": "allgemeinwissen",
+    "name": "Allgemeinwissen",
+    "description": "Allgemeine Fragen zu verschiedenen Themen",
+    "difficulties": [
+      "einfach",
+      "mittel",
+      "schwer"
+    ]
+  },
+  {
+    "id": "geografie",
+    "name": "Geografie",
+    "description": "Fragen zu Ländern, Städten und geografischen Besonderheiten",
+    "difficulties": [
+      "einfach",
+      "mittel",
+      "schwer"
+    ]
+  }
+]
