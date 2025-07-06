@@ -37,10 +37,25 @@ app.use(express.json());
 // Preflight requests für CORS
 app.options('*', cors(corsOptions));
 
+// CORS Headers für alle Responses
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', 'https://nevugs-quizmaster.netlify.app');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Origin, Accept');
+  res.header('Access-Control-Allow-Credentials', 'true');
+  next();
+});
+
 // API Endpoints
 
 // Alle Kategorien abrufen
 app.get('/api/categories', async (req, res) => {
+  // CORS Headers
+  res.header('Access-Control-Allow-Origin', 'https://nevugs-quizmaster.netlify.app');
+  res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Origin, Accept');
+  res.header('Access-Control-Allow-Credentials', 'true');
+  
   try {
     const categories = await Category.find({ isActive: true });
     res.json(categories);
