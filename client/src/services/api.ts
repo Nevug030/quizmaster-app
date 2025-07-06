@@ -1,6 +1,5 @@
 import axios from 'axios';
 import { Category, Question, BlacklistEntry } from '../types';
-import { API_CONFIG } from '../config/apiConfig';
 
 // Use configuration file for API URL
 const API_BASE_URL = 'https://quizmaster-app-kqm7.onrender.com/api';
