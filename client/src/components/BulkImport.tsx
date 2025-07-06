@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Category } from '../types';
+import { Category, Question } from '../types';
 import { quizApi } from '../services/api';
 
 const BulkImport: React.FC = () => {
@@ -87,6 +87,35 @@ const BulkImport: React.FC = () => {
     setShowPreview(true);
   };
 
+  const checkForDuplicates = async (questions: Array<{question: string, answer: string}>) => {
+    try {
+      // Lade alle existierenden Fragen
+      const existingQuestions = await quizApi.getQuestions();
+      
+      const duplicates: Array<{question: string, answer: string}> = [];
+      const uniqueQuestions: Array<{question: string, answer: string}> = [];
+      
+      for (const newQuestion of questions) {
+        const isDuplicate = existingQuestions.some(existing => 
+          existing.question.toLowerCase().trim() === newQuestion.question.toLowerCase().trim() &&
+          existing.correctAnswer.toLowerCase().trim() === newQuestion.answer.toLowerCase().trim()
+        );
+        
+        if (isDuplicate) {
+          duplicates.push(newQuestion);
+        } else {
+          uniqueQuestions.push(newQuestion);
+        }
+      }
+      
+      return { duplicates, uniqueQuestions };
+    } catch (error) {
+      console.error('Fehler beim Prüfen auf Duplikate:', error);
+      // Bei Fehler alle Fragen als unique behandeln
+      return { duplicates: [], uniqueQuestions: questions };
+    }
+  };
+
   const importQuestions = async () => {
     if (!selectedCategory) {
       alert('Bitte wähle eine Kategorie aus!');
@@ -100,7 +129,18 @@ const BulkImport: React.FC = () => {
 
     setLoading(true);
     setShowProgress(true);
-    setTotalQuestions(previewQuestions.length);
+    
+    // Prüfe auf Duplikate
+    const { duplicates, uniqueQuestions } = await checkForDuplicates(previewQuestions);
+    
+    if (uniqueQuestions.length === 0) {
+      alert(`Alle ${previewQuestions.length} Fragen sind bereits vorhanden!`);
+      setLoading(false);
+      setShowProgress(false);
+      return;
+    }
+    
+    setTotalQuestions(uniqueQuestions.length);
     setCurrentQuestion(0);
     setImportProgress(0);
     
@@ -108,12 +148,12 @@ const BulkImport: React.FC = () => {
     let errorCount = 0;
 
     try {
-      for (let i = 0; i < previewQuestions.length; i++) {
-        const questionData = previewQuestions[i];
+      for (let i = 0; i < uniqueQuestions.length; i++) {
+        const questionData = uniqueQuestions[i];
         
         // Update progress
         setCurrentQuestion(i + 1);
-        setImportProgress(((i + 1) / previewQuestions.length) * 100);
+        setImportProgress(((i + 1) / uniqueQuestions.length) * 100);
         
         try {
           await quizApi.addQuestion({
@@ -129,7 +169,18 @@ const BulkImport: React.FC = () => {
         }
       }
 
-      alert(`Import abgeschlossen!\n✅ ${successCount} Fragen erfolgreich hinzugefügt\n❌ ${errorCount} Fehler`);
+      // Erstelle Ergebnis-Nachricht
+      let resultMessage = `Import abgeschlossen!\n✅ ${successCount} Fragen erfolgreich hinzugefügt`;
+      
+      if (duplicates.length > 0) {
+        resultMessage += `\n⏭️ ${duplicates.length} Fragen bereits vorhanden (übersprungen)`;
+      }
+      
+      if (errorCount > 0) {
+        resultMessage += `\n❌ ${errorCount} Fehler`;
+      }
+      
+      alert(resultMessage);
       
       // Reset form
       setBulkData('');
@@ -347,6 +398,9 @@ Welches chemische Element hat die Ordnungszahl 79?	Gold"
             <p><strong>Kategorie:</strong> {categories.find(c => c.categoryId === selectedCategory)?.name}</p>
             <p><strong>Schwierigkeit:</strong> {selectedDifficulty}</p>
             <p><strong>Anzahl Fragen:</strong> {previewQuestions.length}</p>
+            <p style={{ fontSize: '0.9rem', opacity: 0.8 }}>
+              <strong>ℹ️ Hinweis:</strong> Duplikate werden automatisch erkannt und übersprungen
+            </p>
           </div>
 
           <div style={{ maxHeight: '300px', overflowY: 'auto', marginBottom: '20px' }}>
@@ -399,6 +453,7 @@ Welches chemische Element hat die Ordnungszahl 79?	Gold"
           <li>Stelle sicher, dass Frage und Antwort durch Tab, Semikolon oder Komma getrennt sind</li>
           <li>Leere Zeilen werden automatisch übersprungen</li>
           <li>Generiere immer zuerst eine Vorschau, um das Format zu überprüfen</li>
+          <li>Duplikate werden automatisch erkannt und übersprungen</li>
           <li>Du kannst mehrere Importe mit verschiedenen Kategorien/Schwierigkeiten machen</li>
           <li>Bei Fehlern werden nur die fehlerhaften Fragen übersprungen</li>
         </ul>
