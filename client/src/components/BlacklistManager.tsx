@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Question } from '../types';
+import { BlacklistEntry } from '../types';
 import { quizApi } from '../services/api';
 
 const BlacklistManager: React.FC = () => {
   const navigate = useNavigate();
-  const [blacklistedQuestions, setBlacklistedQuestions] = useState<Question[]>([]);
+  const [blacklistedQuestions, setBlacklistedQuestions] = useState<BlacklistEntry[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -17,19 +17,7 @@ const BlacklistManager: React.FC = () => {
     try {
       setLoading(true);
       const blacklist = await quizApi.getBlacklist();
-      
-      if (blacklist.length === 0) {
-        setBlacklistedQuestions([]);
-        return;
-      }
-
-      // Alle Fragen laden und nach Blacklist filtern
-      const allQuestions = await quizApi.getQuestions();
-      const blacklistedQuestionsData = allQuestions.filter(q => 
-        blacklist.includes(q.id)
-      );
-      
-      setBlacklistedQuestions(blacklistedQuestionsData);
+      setBlacklistedQuestions(blacklist);
     } catch (err) {
       setError('Fehler beim Laden der Blacklist');
       console.error(err);
@@ -42,7 +30,7 @@ const BlacklistManager: React.FC = () => {
     try {
       await quizApi.removeFromBlacklist(questionId);
       setBlacklistedQuestions(prev => 
-        prev.filter(q => q.id !== questionId)
+        prev.filter(q => q.questionId !== questionId)
       );
       alert('Frage wurde von der Blacklist entfernt!');
     } catch (error) {
@@ -96,9 +84,9 @@ const BlacklistManager: React.FC = () => {
           </div>
         ) : (
           <div style={{ display: 'grid', gap: '20px' }}>
-            {blacklistedQuestions.map((question, index) => (
+            {blacklistedQuestions.map((blacklistEntry, index) => (
               <div 
-                key={question.id} 
+                key={blacklistEntry._id} 
                 className="card"
                 style={{ 
                   background: 'rgba(231, 112, 85, 0.1)',
@@ -121,7 +109,7 @@ const BlacklistManager: React.FC = () => {
                         borderRadius: '4px',
                         textTransform: 'capitalize'
                       }}>
-                        {question.category}
+                        {blacklistEntry.category}
                       </span>
                       <span style={{ 
                         background: '#fdcb6e', 
@@ -130,10 +118,10 @@ const BlacklistManager: React.FC = () => {
                         borderRadius: '4px',
                         textTransform: 'capitalize'
                       }}>
-                        {question.difficulty}
+                        {blacklistEntry.difficulty}
                       </span>
                     </div>
-                    <h4 style={{ marginBottom: '10px' }}>{question.question}</h4>
+                    <h4 style={{ marginBottom: '10px' }}>{blacklistEntry.questionText}</h4>
                     <div style={{ 
                       background: 'rgba(0, 184, 148, 0.2)',
                       border: '1px solid #00b894',
@@ -141,12 +129,30 @@ const BlacklistManager: React.FC = () => {
                       padding: '10px',
                       marginTop: '10px'
                     }}>
-                      <strong style={{ color: '#00b894' }}>Antwort:</strong> {question.correctAnswer}
+                      <strong style={{ color: '#00b894' }}>Antwort:</strong> {blacklistEntry.correctAnswer}
+                    </div>
+                    {blacklistEntry.reason && (
+                      <div style={{ 
+                        background: 'rgba(255, 107, 107, 0.2)',
+                        border: '1px solid #ff6b6b',
+                        borderRadius: '8px',
+                        padding: '10px',
+                        marginTop: '10px'
+                      }}>
+                        <strong style={{ color: '#ff6b6b' }}>Grund:</strong> {blacklistEntry.reason}
+                      </div>
+                    )}
+                    <div style={{ 
+                      fontSize: '0.8rem', 
+                      opacity: 0.6, 
+                      marginTop: '10px' 
+                    }}>
+                      Gesperrt am: {new Date(blacklistEntry.createdAt).toLocaleDateString('de-DE')}
                     </div>
                   </div>
                   <button 
                     className="btn btn-success"
-                    onClick={() => removeFromBlacklist(question.id)}
+                    onClick={() => removeFromBlacklist(blacklistEntry.questionId)}
                     style={{ marginLeft: '15px', padding: '8px 16px', fontSize: '0.9rem' }}
                   >
                     ✅ Entfernen
@@ -163,8 +169,9 @@ const BlacklistManager: React.FC = () => {
         <ul style={{ textAlign: 'left', lineHeight: '1.6' }}>
           <li>Gesperrte Fragen werden nicht mehr in Quiz-Runden angezeigt</li>
           <li>Du kannst Fragen jederzeit wieder von der Blacklist entfernen</li>
-          <li>Die Blacklist wird permanent gespeichert</li>
+          <li>Die Blacklist wird permanent in der Datenbank gespeichert</li>
           <li>Fragen können während des Spiels über den "🚫 Blacklist"-Button gesperrt werden</li>
+          <li>Jeder Blacklist-Eintrag enthält den Grund und Zeitstempel</li>
         </ul>
       </div>
     </div>

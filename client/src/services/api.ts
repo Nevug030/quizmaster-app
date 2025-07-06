@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { Category, Question } from '../types';
+import { Category, Question, BlacklistEntry } from '../types';
 import { API_CONFIG } from '../config/apiConfig';
 
 // Use configuration file for API URL
@@ -45,21 +45,33 @@ export const quizApi = {
     return response.data;
   },
 
-  // Blacklist abrufen
-  getBlacklist: async (): Promise<string[]> => {
+  // Blacklist abrufen (neue MongoDB-Struktur)
+  getBlacklist: async (): Promise<BlacklistEntry[]> => {
     const response = await api.get('/blacklist');
     return response.data;
   },
 
   // Frage zur Blacklist hinzufügen
-  addToBlacklist: async (questionId: string): Promise<{ success: boolean; blacklist: string[] }> => {
-    const response = await api.post('/blacklist', { questionId });
+  addToBlacklist: async (questionId: string, reason?: string): Promise<{ success: boolean; blacklist: BlacklistEntry[] }> => {
+    const response = await api.post('/blacklist', { questionId, reason });
     return response.data;
   },
 
   // Frage von Blacklist entfernen
-  removeFromBlacklist: async (questionId: string): Promise<{ success: boolean; blacklist: string[] }> => {
+  removeFromBlacklist: async (questionId: string): Promise<{ success: boolean; blacklist: BlacklistEntry[] }> => {
     const response = await api.delete(`/blacklist/${questionId}`);
+    return response.data;
+  },
+
+  // Health check
+  getHealth: async (): Promise<any> => {
+    const response = await api.get('/health');
+    return response.data;
+  },
+
+  // Migration trigger (for development)
+  triggerMigration: async (): Promise<any> => {
+    const response = await api.post('/migrate');
     return response.data;
   },
 };

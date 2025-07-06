@@ -1,0 +1,22 @@
+services:
+  - type: web
+    name: quizmaster-backend
+    env: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: MONGODB_URI
+        sync: false # Wird manuell in Render Dashboard gesetzt
+    healthCheckPath: /api/health
+    autoDeploy: true
+    region: frankfurt
+    scaling:
+      minInstances: 1
+      maxInstances: 1
+    disk:
+      name: data
+      mountPath: /data
+      sizeGB: 1 

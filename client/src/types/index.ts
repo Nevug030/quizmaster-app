@@ -40,4 +40,44 @@ export interface GameState {
   showAnswer: boolean;
   selectedPlayer: Player | null;
   blacklistedQuestions: string[];
+}
+
+// Neue MongoDB-basierte Typen
+export interface BlacklistEntry {
+  _id: string;
+  questionId: string;
+  reason: string;
+  category: string;
+  difficulty: string;
+  questionText: string;
+  correctAnswer: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface MongoDBQuestion {
+  _id: string;
+  questionId: string;
+  category: string;
+  difficulty: string;
+  question: string;
+  correctAnswer: string;
+  options: string[];
+  usageCount: number;
+  lastUsed: string | null;
+  isActive: boolean;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export interface MongoDBCategory {
+  _id: string;
+  categoryId: string;
+  name: string;
+  description: string;
+  difficulties: string[];
+  questionCount: number;
+  isActive: boolean;
+  createdAt: string;
+  updatedAt: string;
 } 
