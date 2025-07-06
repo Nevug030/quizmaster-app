@@ -1,5 +1,5 @@
 [build]
-  command = "npm install && cd client && npm install && npm run build"
+  command = "npm install --legacy-peer-deps && cd client && npm install --legacy-peer-deps && npm run build"
   publish = "client/build"
 
 [build.environment]
@@ -8,7 +8,7 @@
 
 [[redirects]]
   from = "/api/*"
-  to = "https://quizmaster-backend.onrender.com/api/:splat"
+  to = "https://quizmaster-app-kqm7.onrender.com/api/:splat"
   status = 200
   force = true
 
@@ -18,11 +18,11 @@
   status = 200
 
 [context.production.environment]
-  REACT_APP_API_URL = "https://quizmaster-backend.onrender.com/api"
+  REACT_APP_API_URL = "https://quizmaster-app-kqm7.onrender.com/api"
   NODE_ENV = "production"
 
 [context.deploy-preview.environment]
-  REACT_APP_API_URL = "https://quizmaster-backend.onrender.com/api"
+  REACT_APP_API_URL = "https://quizmaster-app-kqm7.onrender.com/api"
   NODE_ENV = "production"
 
 # Dauerhafte Headers für bessere Performance
