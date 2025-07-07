@@ -153,6 +153,11 @@ const GamePage: React.FC = () => {
     }
   };
 
+  const skipQuestionWithoutReplacement = () => {
+    // Überspringe die aktuelle Frage ohne Ersatz und gehe zur nächsten
+    nextQuestion();
+  };
+
   const blacklistQuestion = async () => {
     if (!gameState.currentQuestion) return;
     
@@ -368,6 +373,13 @@ const GamePage: React.FC = () => {
               ⏭️ Überspringen & Nachladen
             </button>
             <button 
+              className="btn btn-secondary"
+              onClick={skipQuestionWithoutReplacement}
+              title="Frage überspringen ohne neue Frage nachzuladen (0 Punkte)"
+            >
+              ⏭️ Überspringen (0 Punkte)
+            </button>
+            <button 
               className="btn btn-danger"
               onClick={blacklistQuestion}
               title="Frage zur Blacklist hinzufügen und neue Frage nachladen"
@@ -387,7 +399,7 @@ const GamePage: React.FC = () => {
             className="btn btn-secondary"
             onClick={nextQuestion}
           >
-            {settings?.questionCount && questionsAsked >= settings.questionCount ? '�� Quiz beenden' : '⏭️ Nächste Frage'}
+            {settings?.questionCount && questionsAsked >= settings.questionCount ? '🏆 Quiz beenden' : '⏭️ Nächste Frage'}
           </button>
         )}
       </div>
