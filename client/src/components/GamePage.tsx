@@ -370,21 +370,21 @@ const GamePage: React.FC = () => {
               onClick={skipQuestion}
               title="Frage überspringen und neue Frage nachladen"
             >
-              ⏭️ Überspringen & Nachladen
+              🔄 Ersetzen
             </button>
             <button 
               className="btn btn-secondary"
               onClick={skipQuestionWithoutReplacement}
               title="Frage überspringen ohne neue Frage nachzuladen (0 Punkte)"
             >
-              ⏭️ Überspringen (0 Punkte)
+              ⏭️ Überspringen
             </button>
             <button 
               className="btn btn-danger"
               onClick={blacklistQuestion}
               title="Frage zur Blacklist hinzufügen und neue Frage nachladen"
             >
-              🚫 Blacklist & Nachladen
+              🚫 Blacklist
             </button>
             <button 
               className="btn btn-success"
